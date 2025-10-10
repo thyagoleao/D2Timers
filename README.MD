@@ -96,7 +96,7 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
 
  The visual wil match the Dark or Light mode from system.
 
-![Dark_and_Light.png](C:\Users\Thyago\Pictures\Dark_and_Light.png)
+<img title="" src="screenshots/Dark_and_Light.png" alt="" data-align="left" width="660">
 
 
 

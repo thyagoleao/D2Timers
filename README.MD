@@ -51,17 +51,23 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
 
 - Timer 1 - Stack Neutrals**:
   
+  - Shortcut key: Z
+  
   - Auto Mode: First alert: 1:45 (repeats every 1 minutes).
   
   - Manual Mode (click): Alert at 2:00 (repeats).
 
 - **Timer 2 - Power Runes**:
   
+  - Shortcut key: X
+  
   - Auto Mode: First alert: 1:50 (repeats every 2 minutes).
   
   - Manual Mode (click): Alert at 2:00 (repeats).
 
 - **Timer 3 - Shrines of Wisdom**:
+  
+  - Shortcut key: C
   
   - Auto Mode: First alert: 6:30 (repeats every 7 minutes).
   
@@ -71,6 +77,8 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
   
   You need to setup a value in mm:ss or seconds (max. 30:00 = 1800).
   Useful for monitoring ability cooldowns, Roshan, Tormentor, etc.
+  
+  - Shortcut key: V
   
   - Auto Mode: The first alert will be at the set time (repeats).
   
@@ -120,4 +128,3 @@ You can let me know in the issues section.
 *This application is made by fan and is not an officially supported Valve Corporation product.*
 
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thyagoleao/D2Timers/total)
-

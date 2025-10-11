@@ -118,3 +118,6 @@ You can let me know in the issues section.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 *This application is made by fan and is not an officially supported Valve Corporation product.*
+
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thyagoleao/D2Timers/total)
+

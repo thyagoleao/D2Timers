@@ -88,7 +88,7 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
 
  The visual wil match the Dark or Light mode from system.
 
-![interface.png](D:\GitHub\D2Timers\screenshots\interface.png)
+<img title="" src="screenshots/interface.png" alt="" data-align="left" width="960">
 
 ## Translation
 

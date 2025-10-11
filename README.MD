@@ -4,7 +4,8 @@
 
 ## Introduction
 
-D2Timers is a tool that aims to facilitate the achievement of objectives in DotA 2.
+I was trying to introduce some friends to the game, and they were having trouble remembering the timing of the objectives. Initially, I created a simple HTML version to help them. The feedback was positive, so I decided to create a dedicated app that was discreet, simple, and easily accessible with hotkeys.
+D2Timers is exactly what it this: a simple and intuitive tool that aims to facilitate the achievement of objectives in DotA 2.
 Anyone interested can use it, of course, but it was created with "habit building" in mind for less experienced players. More experienced players should always challenge themselves to improve their skills. So use it sparingly.
 
 ## What it is

@@ -36,10 +36,6 @@ var translations = map[string]map[string]string{
 		"es": "Acerca de D2Timers",
 		"ru": "О D2Timers",
 	},
-	"Licenses and Credits": {
-		"pt": "Licenças e Créditos",
-		"es": "Licencias y Créditos",
-	},
 	"Close": {
 		"pt": "Fechar",
 		"es": "Cerrar",

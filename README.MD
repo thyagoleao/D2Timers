@@ -128,4 +128,4 @@ You can let me know in the issues section.
 
 *This application is made by fan and is not an officially supported Valve Corporation product.*
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thyagoleao/D2Timers/total)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thyagoleao/D2Timers/total?style=social&label=Current%20Visitors)

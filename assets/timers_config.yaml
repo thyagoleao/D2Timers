@@ -1,0 +1,52 @@
+"Timer 1":
+  Name: "Stack Neutrals"
+  AudioFilename: "audio_timer1.ogg"
+  BackgroundImageName: "bg_timer1.png"
+  Priority: 1
+  Normal_Auto_Initial: 105
+  Normal_Auto_Repeat: 60
+  Normal_Manual_Initial: 60
+  Normal_Manual_Repeat: 60
+  Turbo_Auto_Initial: 0
+  Turbo_Auto_Repeat: 0
+  Turbo_Manual_Initial: 0
+  Turbo_Manual_Repeat: 0
+"Timer 2":
+  Name: "Power Runes"
+  AudioFilename: "audio_timer2.ogg"
+  BackgroundImageName: "bg_timer2.png"
+  Priority: 2
+  Normal_Auto_Initial: 350
+  Normal_Auto_Repeat: 120
+  Normal_Manual_Initial: 120
+  Normal_Manual_Repeat: 120
+  Turbo_Auto_Initial: 230
+  Turbo_Auto_Repeat: 0
+  Turbo_Manual_Initial: 120
+  Turbo_Manual_Repeat: 120
+"Timer 3":
+  Name: "Shrines of Wisdom"
+  AudioFilename: "audio_timer3.ogg"
+  BackgroundImageName: "bg_timer3.png"
+  Priority: 3
+  Normal_Auto_Initial: 390
+  Normal_Auto_Repeat: 420
+  Normal_Manual_Initial: 420
+  Normal_Manual_Repeat: 420
+  Turbo_Auto_Initial: 190
+  Turbo_Auto_Repeat: 210
+  Turbo_Manual_Initial: 210
+  Turbo_Manual_Repeat: 210
+"Timer 4":
+  Name: "Custom Timer"
+  AudioFilename: "audio_timer4.ogg"
+  BackgroundImageName: "bg_timer4.png"
+  Priority: 4
+  Normal_Auto_Initial: 0
+  Normal_Auto_Repeat: 0
+  Normal_Manual_Initial: 0
+  Normal_Manual_Repeat: 0
+  Turbo_Auto_Initial: 0
+  Turbo_Auto_Repeat: 0
+  Turbo_Manual_Initial: 0
+  Turbo_Manual_Repeat: 0

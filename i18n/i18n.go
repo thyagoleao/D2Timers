@@ -41,11 +41,16 @@ var translations = map[string]map[string]string{
 		"es": "Cerrar",
 		"ru": "Закрыть",
 	},
+	"Help": {
+		"pt": "Ajuda",
+		"es": "Ayuda",
+		"ru": "Помощь",
+	},
 }
 
 func init() {
 	// Check for override environment variable
-	if forcedLang := strings.TrimSpace(os.Getenv("D2TIMERS_LANG")); forcedLang != "" {
+	if forcedLang := strings.TrimSpace(os.Getenv("D2TIMERS_LANG")); forcedLang != "" { // Force language for testing purposes
 		log.Printf("D2TIMERS_LANG is set to: '%s'", forcedLang)
 		lang = forcedLang
 		return
@@ -59,14 +64,16 @@ func init() {
 		return
 	}
 
+	log.Printf("Raw user locales detected: %v", userLocales)
+
 	if len(userLocales) > 0 {
-		locale := userLocales[0]
-		log.Printf("Detected user locale: %s", locale)
-		if strings.HasPrefix(locale, "pt") {
+		locale := strings.ToLower(userLocales[0])
+		log.Printf("Processing primary user locale: %s", locale)
+		if strings.Contains(locale, "pt") {
 			lang = "pt"
-		} else if strings.HasPrefix(locale, "es") {
+		} else if strings.Contains(locale, "es") {
 			lang = "es"
-		} else if strings.HasPrefix(locale, "ru") {
+		} else if strings.Contains(locale, "ru") {
 			lang = "ru"
 		} else {
 			lang = "en"

@@ -1,25 +1,3 @@
-// Package main contains the application wiring and the AppManager which
-// coordinates timers, audio and the UI. This file centralizes the shared
-// application state and the command loop used to serialize timer state
-// mutations.
-//
-// Maintenance notes / tips:
-//   - Concurrency model: the application uses a single command-loop goroutine
-//     (see `commandLoop`) to serialize Start/Pause/Resume/Reset operations.
-//     Timers are also ticked in a separate goroutine (`tick`). Because timer
-//     state (e.g. Remaining, State) can be mutated by both the commandLoop
-//     and the tick goroutine, take care to avoid data races if you change
-//     the model. The preferred approaches are:
-//   - Add a mutex to the DotaTimer struct and protect mutable fields, or
-//   - Move all mutations (including Tick) into the commandLoop goroutine.
-//   - `cmdCh` is a buffered channel used to enqueue commands from the UI. The
-//     current implementation drops commands when the channel is full to avoid
-//     blocking the UI. If you need stronger guarantees (no dropped commands),
-//     consider increasing the buffer size, switching to a blocking-with-timeout
-//     send, or adding backpressure to the UI.
-//   - `allTimers` is populated during startup and is treated as immutable after
-//     `NewAppManager` returns. If you ever modify `allTimers` at runtime,
-//     protect it with a mutex or switch to an immutable copy-on-write pattern.
 package main
 
 import (
@@ -29,13 +7,14 @@ import (
 	"D2Timers/ui"
 	"context"
 	"embed"
-	"encoding/json"
 	"fmt"
 	"image/color"
 	"log"
 	"sort"
 	"sync"
 	"time"
+
+	"gopkg.in/yaml.v3"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -47,7 +26,6 @@ import (
 	"github.com/gopxl/beep/vorbis"
 )
 
-// AppManager is the main application struct, holding all state.
 type AppManager struct {
 	mainWindow   fyne.Window
 	allTimers    []*timer.DotaTimer
@@ -64,17 +42,18 @@ type AppManager struct {
 
 	audioBuffers map[string]*beep.Buffer
 	speakerLock  sync.Mutex
-	content      embed.FS // Embedded file system for assets
+	content      embed.FS
+
+	turboMode bool
+
+	turboCheck *widget.Check
 }
 
-// NewAppManager creates a new application manager.
 func NewAppManager(content embed.FS) *AppManager {
 	a := &AppManager{audioBuffers: make(map[string]*beep.Buffer), content: content}
 	timer.LoadTimerConfigs(content)
 	log.Printf("Loaded %d timer configs.", len(timer.TimerConfigs))
 	a.loadAudioFiles()
-
-	// Use a larger buffer for the command channel to reduce drops under brief bursts.
 	a.cmdCh = make(chan control.Command, 256)
 	a.cmdCtx, a.cmdCancel = context.WithCancel(context.Background())
 	go a.commandLoop()
@@ -88,10 +67,7 @@ func NewAppManager(content embed.FS) *AppManager {
 	return a
 }
 
-// EnqueueCommand posts a command to the internal command loop.
 func (a *AppManager) EnqueueCommand(cmd control.Command) {
-	// Try to enqueue the command but avoid blocking UI indefinitely. If the
-	// channel stays full for the configured short timeout, drop and log.
 	select {
 	case a.cmdCh <- cmd:
 	case <-time.After(150 * time.Millisecond):
@@ -105,7 +81,6 @@ func (a *AppManager) commandLoop() {
 		case <-a.cmdCtx.Done():
 			return
 		case cmd := <-a.cmdCh:
-			// handle known command types
 			t := cmd.Target
 			if t != nil {
 				switch cmd.Type {
@@ -119,7 +94,6 @@ func (a *AppManager) commandLoop() {
 					t.Reset(a)
 				}
 			}
-			// send reply if requested
 			if cmd.Reply != nil {
 				select {
 				case cmd.Reply <- nil:
@@ -130,24 +104,21 @@ func (a *AppManager) commandLoop() {
 	}
 }
 
-// AllTimers returns all timers.
 func (a *AppManager) AllTimers() []*timer.DotaTimer {
 	return a.allTimers
 }
 
-// AddActiveTimer adds a timer to the list of active timers.
 func (a *AppManager) AddActiveTimer(t *timer.DotaTimer) {
 	a.activeLock.Lock()
 	defer a.activeLock.Unlock()
 	for _, at := range a.activeTimers {
 		if at == t {
-			return // Already in the list
+			return
 		}
 	}
 	a.activeTimers = append(a.activeTimers, t)
 }
 
-// RemoveActiveTimer removes a timer from the list of active timers.
 func (a *AppManager) RemoveActiveTimer(t *timer.DotaTimer) {
 	a.activeLock.Lock()
 	defer a.activeLock.Unlock()
@@ -202,7 +173,6 @@ func (a *AppManager) loadAudioFiles() {
 	}
 }
 
-// CreateBackgroundImage creates an image object for a timer's background.
 func (a *AppManager) CreateBackgroundImage(filename string) fyne.CanvasObject {
 	if filename == "" {
 		return canvas.NewRectangle(color.Transparent)
@@ -222,7 +192,6 @@ func (a *AppManager) CreateBackgroundImage(filename string) fyne.CanvasObject {
 	return img
 }
 
-// PlaySound plays a sound file.
 func (a *AppManager) PlaySound(filename string) {
 	b, ok := a.audioBuffers[filename]
 	if !ok {
@@ -236,7 +205,6 @@ func (a *AppManager) PlaySound(filename string) {
 	speaker.Play(b.Streamer(0, b.Len()))
 }
 
-// UpdateControlButtonState updates the visibility of the main control buttons.
 func (a *AppManager) UpdateControlButtonState() {
 	isAnyActive := false
 	isAnyPaused := false
@@ -290,8 +258,76 @@ func (a *AppManager) UpdateControlButtonState() {
 			a.autoButton.Refresh()
 			a.stopButton.Refresh()
 			a.startButton.Refresh()
+
+			allInitial := true
+			for _, t := range a.allTimers {
+				if t.GetState() != timer.StateInactive && t.GetState() != timer.StateUnconfigured {
+					allInitial = false
+					break
+				}
+			}
+
+			if a.turboCheck != nil {
+				fyne.Do(func() {
+					a.turboCheck.SetChecked(a.turboMode)
+					if allInitial {
+						a.turboCheck.Enable()
+					} else {
+						a.turboCheck.Disable()
+					}
+				})
+			}
 		}
 	})
+}
+
+func (a *AppManager) SetTurboCheck(c *widget.Check) {
+	a.turboCheck = c
+}
+
+func (a *AppManager) IsTurboEnabled() bool {
+	return a.turboMode
+}
+
+func (a *AppManager) ToggleTurboMode(enable bool) error {
+	if enable {
+		for _, t := range a.allTimers {
+			st := t.GetState()
+			if st != timer.StateInactive && st != timer.StateUnconfigured {
+				fyne.Do(func() {
+					dialog.ShowInformation(i18n.T("Turbo Mode"), i18n.T("Turbo Mode can only be enabled when all timers are in their initial state."), a.mainWindow)
+				})
+				return fmt.Errorf("cannot enable turbo: not all timers in initial state")
+			}
+		}
+	}
+
+	for _, t := range a.allTimers {
+		oNormal_Auto_Initial, oNormal_Auto_Repeat, oTurbo_Auto_Initial, oTurbo_Auto_Repeat, oNormal_Manual_Initial, oNormal_Manual_Repeat, oTurbo_Manual_Initial, oTurbo_Manual_Repeat := t.GetOriginals()
+		if enable {
+			if oTurbo_Auto_Initial != 0 {
+				t.SetNormal_Auto_InitialRepeat(oTurbo_Auto_Initial, oTurbo_Auto_Repeat)
+			}
+			if oTurbo_Manual_Initial != 0 {
+				t.SetNormal_Manual_InitialRepeat(oTurbo_Manual_Initial, oTurbo_Manual_Repeat)
+			}
+		} else {
+			t.SetNormal_Auto_InitialRepeat(oNormal_Auto_Initial, oNormal_Auto_Repeat)
+			t.SetNormal_Manual_InitialRepeat(oNormal_Manual_Initial, oNormal_Manual_Repeat)
+		}
+	}
+
+	a.turboMode = enable
+
+	fyne.Do(func() {
+		for _, t := range a.allTimers {
+			if t.UI != nil {
+				t.UI.UpdateDisplay()
+			}
+		}
+	})
+
+	return nil
 }
 
 func (a *AppManager) tick(ctx context.Context) {
@@ -305,7 +341,6 @@ func (a *AppManager) tick(ctx context.Context) {
 		case <-ticker.C:
 			timersToAlert := make([]*timer.DotaTimer, 0)
 
-			// Copy active timers under lock to avoid holding the lock while ticking
 			a.activeLock.Lock()
 			activeCopy := make([]*timer.DotaTimer, len(a.activeTimers))
 			copy(activeCopy, a.activeTimers)
@@ -328,7 +363,6 @@ func (a *AppManager) tick(ctx context.Context) {
 
 			for _, t := range a.allTimers {
 				if t.UI != nil {
-					// TimerUI exposes UpdateDisplay; call it directly to refresh UI.
 					t.UI.UpdateDisplay()
 				}
 			}
@@ -336,7 +370,6 @@ func (a *AppManager) tick(ctx context.Context) {
 	}
 }
 
-// HandleKeyRune handles key presses for the application.
 func (a *AppManager) HandleKeyRune(r rune) {
 	var index int = -1
 
@@ -349,6 +382,10 @@ func (a *AppManager) HandleKeyRune(r rune) {
 		} else if !a.autoButton.Hidden {
 			a.autoButton.Tapped(&fyne.PointEvent{})
 		}
+	case 't', 'T':
+		if a.turboCheck != nil {
+			a.turboCheck.SetChecked(!a.turboCheck.Checked)
+		}
 	case 'r', 'R':
 		a.resetButton.Tapped(&fyne.PointEvent{})
 	case 'z', 'Z':
@@ -357,32 +394,29 @@ func (a *AppManager) HandleKeyRune(r rune) {
 		index = int(timer.TimerIndexPowerRunes)
 	case 'c', 'C':
 		index = int(timer.TimerIndexShrinesOfWisdom)
-
 	case 'v', 'V':
 		index = int(timer.TimerIndexCustomTimer)
 	}
 
 	if index >= 0 && index < len(a.allTimers) {
 		t := a.allTimers[index]
-		// If the UI implements the concrete TimerWidget, trigger a tap on it.
 		if uw, ok := t.UI.(*ui.TimerWidget); ok {
 			uw.GetCanvasObject().(*ui.TappableContainer).Tapped(&fyne.PointEvent{})
 		}
 	}
 }
 
-// ShowInfoDialog shows a dialog with the given title and content.
 func (a *AppManager) ShowInfoDialog(title, contentFile string, minSize fyne.Size) {
 	var contentText string
-	if title == i18n.T("About D2Timers") {
-		bytes, err := a.content.ReadFile("assets/dialogue_about.json")
+	if contentFile == "assets/timers_help.yaml" {
+		bytes, err := a.content.ReadFile("assets/timers_help.yaml")
 		if err != nil {
 			dialog.ShowError(err, a.mainWindow)
 			return
 		}
 
 		var dialogues map[string]string
-		if err := json.Unmarshal(bytes, &dialogues); err != nil {
+		if err := yaml.Unmarshal(bytes, &dialogues); err != nil {
 			dialog.ShowError(err, a.mainWindow)
 			return
 		}
@@ -405,28 +439,22 @@ func (a *AppManager) ShowInfoDialog(title, contentFile string, minSize fyne.Size
 	dialog.ShowCustom(title, i18n.T("Close"), scrollableContent, a.mainWindow)
 }
 
-// SetAutoButton sets the auto button widget.
 func (a *AppManager) SetAutoButton(btn *widget.Button) {
 	a.autoButton = btn
 }
 
-// SetStartButton sets the start button widget.
 func (a *AppManager) SetStartButton(btn *widget.Button) {
 	a.startButton = btn
 }
 
-// SetStopButton sets the stop button widget.
 func (a *AppManager) SetStopButton(btn *widget.Button) {
 	a.stopButton = btn
 }
 
-// SetResetButton sets the reset button widget.
 func (a *AppManager) SetResetButton(btn *widget.Button) {
 	a.resetButton = btn
 }
 
-// Shutdown attempts to gracefully stop the AppManager command loop. It
-// cancels the internal context and allows background goroutines to exit.
 func (a *AppManager) Shutdown() {
 	if a.cmdCancel != nil {
 		a.cmdCancel()

@@ -1,9 +1,11 @@
 package timer
 
 import (
-	"encoding/json"
+	"fmt"
 	"image/color"
 	"log"
+
+	"gopkg.in/yaml.v3"
 )
 
 // AppContentReader defines the interface for reading content from the embedded file system.
@@ -62,29 +64,44 @@ var (
 
 // TimerConfig holds the static configuration for a timer.
 type TimerConfig struct {
-	Name          string
-	AudioFilename string
-	Priority      int
+	Name                string `yaml:"Name"`
+	AudioFilename       string `yaml:"AudioFilename"`
+	Priority            int    `yaml:"Priority"`
 
-	AutoInitial         int
-	AutoRepeat          int
-	ManualInitial       int
-	ManualRepeat        int
-	BackgroundImageName string
+	Normal_Auto_Initial   int `yaml:"Normal_Auto_Initial"`
+	Normal_Auto_Repeat    int `yaml:"Normal_Auto_Repeat"`
+	Normal_Manual_Initial int `yaml:"Normal_Manual_Initial"`
+	Normal_Manual_Repeat  int `yaml:"Normal_Manual_Repeat"`
+	// Turbo* fields: if zero, timer has no turbo configuration and normal values are used
+	Turbo_Auto_Initial    int `yaml:"Turbo_Auto_Initial"`
+	Turbo_Auto_Repeat     int `yaml:"Turbo_Auto_Repeat"`
+	Turbo_Manual_Initial  int `yaml:"Turbo_Manual_Initial"`
+	Turbo_Manual_Repeat   int `yaml:"Turbo_Manual_Repeat"`
+	BackgroundImageName string `yaml:"BackgroundImageName"`
 }
 
 // TimerConfigs holds the configuration for all default timers.
 var TimerConfigs []*TimerConfig
 
-// LoadTimerConfigs loads timer configurations from a JSON file.
+// LoadTimerConfigs loads timer configurations from a YAML file.
 func LoadTimerConfigs(reader AppContentReader) {
-	data, err := reader.ReadFile("assets/timers_config.json")
+	data, err := reader.ReadFile("assets/timers_config.yaml")
 	if err != nil {
 		log.Fatalf("Failed to read timer configs: %v", err)
 	}
 
-	err = json.Unmarshal(data, &TimerConfigs)
+	var configs map[string]TimerConfig
+	err = yaml.Unmarshal(data, &configs)
 	if err != nil {
 		log.Fatalf("Failed to unmarshal timer configs: %v", err)
+	}
+
+	for i := 0; i < len(configs); i++ {
+		key := fmt.Sprintf("Timer %d", i+1)
+		config, ok := configs[key]
+		if !ok {
+			continue
+		}
+		TimerConfigs = append(TimerConfigs, &config)
 	}
 }

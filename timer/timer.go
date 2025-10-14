@@ -43,6 +43,16 @@ type DotaTimer struct {
 	cycleDuration     int
 	CustomDurationSec int
 
+	// original config values, stored for turbo mode toggling
+	originalNormal_Auto_Initial   int
+	originalNormal_Auto_Repeat    int
+	originalTurbo_Auto_Initial      int
+	originalTurbo_Auto_Repeat       int
+	originalNormal_Manual_Initial     int
+	originalNormal_Manual_Repeat      int
+	originalTurbo_Manual_Initial  int
+	originalTurbo_Manual_Repeat   int
+
 	// UI components are stored here but managed by the UI package.
 	UI TimerUI // Holds the associated UI component, managed by the ui package
 }
@@ -57,9 +67,17 @@ func (t *DotaTimer) GetMode() TimerMode {
 // NewDotaTimer creates a new timer based on a config.
 func NewDotaTimer(c *TimerConfig) *DotaTimer {
 	t := &DotaTimer{
-		TimerConfig: c,
-		State:       StateInactive,
-		mode:        ModeAuto,
+		TimerConfig:                 c,
+		State:                       StateInactive,
+		mode:                        ModeAuto,
+		originalNormal_Auto_Initial:   c.Normal_Auto_Initial,
+		originalNormal_Auto_Repeat:    c.Normal_Auto_Repeat,
+		originalTurbo_Auto_Initial:      c.Turbo_Auto_Initial,
+		originalTurbo_Auto_Repeat:       c.Turbo_Auto_Repeat,
+		originalNormal_Manual_Initial:     c.Normal_Manual_Initial,
+		originalNormal_Manual_Repeat:      c.Normal_Manual_Repeat,
+		originalTurbo_Manual_Initial:  c.Turbo_Manual_Initial,
+		originalTurbo_Manual_Repeat:   c.Turbo_Manual_Repeat,
 	}
 	if c.Name == "Custom Timer" {
 		t.State = StateUnconfigured
@@ -107,11 +125,11 @@ func (t *DotaTimer) Start(a App, mode TimerMode) {
 			t.Remaining = t.CustomDurationSec
 			t.cycleDuration = t.CustomDurationSec
 		} else if isAuto {
-			t.Remaining = t.AutoInitial
-			t.cycleDuration = t.AutoRepeat
+			t.Remaining = t.Normal_Auto_Initial
+			t.cycleDuration = t.Normal_Auto_Repeat
 		} else {
-			t.Remaining = t.ManualInitial
-			t.cycleDuration = t.ManualRepeat
+			t.Remaining = t.Normal_Manual_Initial
+			t.cycleDuration = t.Normal_Manual_Repeat
 		}
 	}
 	t.mu.Unlock()
@@ -233,10 +251,10 @@ type TimerSnapshot struct {
 	Mode              TimerMode
 	CustomDurationSec int
 	Name              string
-	AutoInitial       int
-	ManualInitial     int
-	AutoRepeat        int
-	ManualRepeat      int
+	Normal_Auto_Initial   int
+	Normal_Manual_Initial int
+	Normal_Auto_Repeat    int
+	Normal_Manual_Repeat  int
 }
 
 // GetSnapshot returns a consistent snapshot of the timer's state for UI use.
@@ -248,11 +266,32 @@ func (t *DotaTimer) GetSnapshot() TimerSnapshot {
 		Mode:              t.mode,
 		CustomDurationSec: t.CustomDurationSec,
 		Name:              t.Name,
-		AutoInitial:       t.AutoInitial,
-		ManualInitial:     t.ManualInitial,
-		AutoRepeat:        t.AutoRepeat,
-		ManualRepeat:      t.ManualRepeat,
+		Normal_Auto_Initial:   t.Normal_Auto_Initial,
+		Normal_Manual_Initial: t.Normal_Manual_Initial,
+		Normal_Auto_Repeat:    t.Normal_Auto_Repeat,
+		Normal_Manual_Repeat:  t.Normal_Manual_Repeat,
 	}
 	t.mu.RUnlock()
 	return snap
+}
+
+// SetNormal_Auto_InitialRepeat safely updates the Normal_Auto_Initial and Normal_Auto_Repeat values.
+func (t *DotaTimer) SetNormal_Auto_InitialRepeat(initial, repeat int) {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	t.Normal_Auto_Initial = initial
+	t.Normal_Auto_Repeat = repeat
+}
+
+// SetNormal_Manual_InitialRepeat safely updates the Normal_Manual_Initial and Normal_Manual_Repeat values.
+func (t *DotaTimer) SetNormal_Manual_InitialRepeat(initial, repeat int) {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	t.Normal_Manual_Initial = initial
+	t.Normal_Manual_Repeat = repeat
+}
+
+// GetOriginals returns the original timer configuration values.
+func (t *DotaTimer) GetOriginals() (int, int, int, int, int, int, int, int) {
+	return t.originalNormal_Auto_Initial, t.originalNormal_Auto_Repeat, t.originalTurbo_Auto_Initial, t.originalTurbo_Auto_Repeat, t.originalNormal_Manual_Initial, t.originalNormal_Manual_Repeat, t.originalTurbo_Manual_Initial, t.originalTurbo_Manual_Repeat
 }

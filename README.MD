@@ -47,9 +47,15 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
   
   - Resets all timers to the initial state. 
 
+- **Turbo Mode:**
+  
+  - Hotkey: "T".
+  
+  - Set timers for "Turbo Mode".
+
 ## About Timers
 
-- Timer 1 - Stack Neutrals**:
+- **Timer 1 - Stack Neutrals**:
   
   - Hotkey: Z
   
@@ -94,9 +100,9 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
 
 ## Visual
 
- The modern and minimalist interface wil match the Dark or Light mode from your system.
+ The modern and minimalist Material based interface wil match the Dark or Light mode from your system and it is easy to use.
 
-<img title="" src="screenshots/interface.png" alt="" data-align="left" width="960">
+<img title="" src="screenshots/interface_v1.1.1.png" alt="" data-align="left" width="960">
 
 ## Translation
 
@@ -126,5 +132,3 @@ You can let me know in the issues section.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 *This application is made by fan and is not an officially supported Valve Corporation product.*
-
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/thyagoleao/D2Timers/total)

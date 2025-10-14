@@ -1,17 +1,3 @@
-// Package ui contains the Fyne user interface for D2Timers. It wires the
-// visual widgets to the timer domain via the App interface and uses a
-// command-based approach to interact with the application manager.
-//
-// Maintenance tips:
-//   - The UI must never mutate timer domain fields directly. Use the
-//     `App.EnqueueCommand` mechanism to request state changes. The command
-//     loop will apply changes and optionally reply on the provided Reply
-//     channel to confirm completion.
-//   - Use `fyne.Do` when updating UI objects from background goroutines.
-//   - The `TimerWidget` implements `timer.TimerUI` and keeps a back reference
-//     from the domain Timer (t.UI = widget) so the command loop or tick can
-//     call `UpdateDisplay` safely. Avoid making UI assumptions inside the
-//     timer package.
 package ui
 
 import (
@@ -33,7 +19,6 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// App defines the interface the UI needs to communicate with the main app.
 type App interface {
 	timer.App
 	AllTimers() []*timer.DotaTimer
@@ -46,9 +31,11 @@ type App interface {
 	SetStopButton(*widget.Button)
 	SetResetButton(*widget.Button)
 	EnqueueCommand(cmd control.Command)
+	ToggleTurboMode(enable bool) error
+	IsTurboEnabled() bool
+	SetTurboCheck(*widget.Check)
 }
 
-// TimerWidget holds the UI components for a single timer.
 type TimerWidget struct {
 	*timer.DotaTimer
 
@@ -64,10 +51,9 @@ type TimerWidget struct {
 	customSetButton        *widget.Button
 }
 
-// NewTimerWidget creates all the UI for a single timer.
 func NewTimerWidget(a App, t *timer.DotaTimer) *TimerWidget {
 	w := &TimerWidget{DotaTimer: t}
-	t.UI = w // Link back to the UI widget from the logic struct
+	t.UI = w
 
 	w.nameText = canvas.NewText(t.Name, color.White)
 	w.nameText.TextStyle.Bold = false
@@ -102,9 +88,8 @@ func NewTimerWidget(a App, t *timer.DotaTimer) *TimerWidget {
 		setCustomTime := func() {
 			val, err := parseTime(w.customTimeEntry.Text)
 			if err != nil {
-				return // Optionally show error dialog
+				return
 			}
-			// Use thread-safe setter to avoid races with ticker/command loop.
 			t.SetCustomDuration(val)
 
 			w.customInputContainer.Hide()
@@ -135,7 +120,6 @@ func NewTimerWidget(a App, t *timer.DotaTimer) *TimerWidget {
 		state := t.GetState()
 		switch state {
 		case timer.StateActiveManual, timer.StateActiveAuto:
-			// send pause command and wait for confirmation
 			reply := make(chan error, 1)
 			a.EnqueueCommand(control.Command{Type: control.CmdPause, Target: t, Reply: reply})
 			select {
@@ -143,7 +127,6 @@ func NewTimerWidget(a App, t *timer.DotaTimer) *TimerWidget {
 			case <-time.After(200 * time.Millisecond):
 			}
 		case timer.StatePaused:
-			// send resume command and wait for confirmation
 			reply := make(chan error, 1)
 			a.EnqueueCommand(control.Command{Type: control.CmdResume, Target: t, Reply: reply})
 			select {
@@ -151,7 +134,6 @@ func NewTimerWidget(a App, t *timer.DotaTimer) *TimerWidget {
 			case <-time.After(200 * time.Millisecond):
 			}
 		case timer.StateInactive:
-			// send start (manual) command and wait for confirmation
 			reply := make(chan error, 1)
 			a.EnqueueCommand(control.Command{Type: control.CmdStart, Target: t, Mode: timer.ModeManual, Reply: reply})
 			select {
@@ -160,34 +142,25 @@ func NewTimerWidget(a App, t *timer.DotaTimer) *TimerWidget {
 			}
 		case timer.StateUnconfigured:
 			if t.Name == "Custom Timer" {
-				// Show the input and clear previous text. Do NOT call UpdateDisplay here
-				// because UpdateDisplay hides the input for StateUnconfigured. This mirrors
-				// the behavior from the old code.
 				w.customTimeEntry.SetText("")
 				w.customContentContainer.Hide()
 				w.customInputContainer.Show()
 			}
 		}
 
-		// Only refresh display for states other than the unconfigured custom timer
 		if state != timer.StateUnconfigured {
 			w.UpdateDisplay()
 		}
-		// It's safe to update control buttons in all cases
 		a.UpdateControlButtonState()
 	}
 
 	w.tappableContainer.OnTappedSecondary = func(e *fyne.PointEvent) {
-		// send reset command and wait for confirmation
 		reply := make(chan error, 1)
 		a.EnqueueCommand(control.Command{Type: control.CmdReset, Target: t, Reply: reply})
 		select {
 		case <-reply:
-			// confirmed
 		case <-time.After(200 * time.Millisecond):
-			// timeout - still proceed to update UI
 		}
-		// Hide custom input when resetting, to match old behavior.
 		if t.Name == "Custom Timer" {
 			w.customInputContainer.Hide()
 			w.customContentContainer.Show()
@@ -248,34 +221,22 @@ func (tw *TimerWidget) getTimeDisplayStringFromSnapshot(s timer.TimerSnapshot) s
 		if s.Name == "Custom Timer" {
 			return timer.FormatTime(s.CustomDurationSec)
 		}
-		var displayDuration int
-		if s.Mode == timer.ModeAuto {
-			displayDuration = s.AutoInitial
-		} else {
-			displayDuration = s.ManualInitial
-		}
+		var displayDuration int = s.Normal_Auto_Initial
 		return timer.FormatTime(displayDuration)
 	}
 	return "--:--"
 }
 
 func (tw *TimerWidget) UpdateDisplay() {
-	// Capture an atomic snapshot of the timer state to avoid races and
-	// inconsistent UI updates while other goroutines may mutate the timer.
 	s := tw.DotaTimer.GetSnapshot()
 	fyne.Do(func() {
-		// Default to the 'inactive/paused/unconfigured' look used in the old UI.
 		var opacity float64 = 0.65
 
 		switch s.State {
 		case timer.StateActiveAuto, timer.StateActiveManual:
-			// active timers have a darker overlay
 			opacity = 0.25
 		case timer.StatePaused, timer.StateInactive, timer.StateUnconfigured:
-			// paused/inactive/unconfigured share the same lighter overlay
 			opacity = 0.65
-			// Do not change visibility of custom input here; visibility is controlled
-			// explicitly by user actions (OnTappedPrimary, Set button, Reset).
 		}
 
 		timeStr := tw.getTimeDisplayStringFromSnapshot(s)
@@ -287,6 +248,10 @@ func (tw *TimerWidget) UpdateDisplay() {
 		tw.colorFilterRect.Refresh()
 		tw.timeText.Refresh()
 	})
+}
+
+func (tw *TimerWidget) ForceShowInitial() {
+	tw.UpdateDisplay()
 }
 
 func BuildTimersList(a App) *fyne.Container {
@@ -304,8 +269,6 @@ func BuildTimersList(a App) *fyne.Container {
 
 func BuildFooter(a App, w fyne.Window) (*widget.Button, *widget.Button, *widget.Button, *widget.Button, fyne.CanvasObject) {
 	autoButton := widget.NewButton("Auto", func() {
-		// Enqueue start(auto) for all timers and wait for confirmations so the
-		// control buttons reflect the new state immediately (behaviour from old UI).
 		var replies []chan error
 		for _, t := range a.AllTimers() {
 			reply := make(chan error, 1)
@@ -392,22 +355,65 @@ func BuildFooter(a App, w fyne.Window) (*widget.Button, *widget.Button, *widget.
 	})
 
 	controlStack := container.NewStack(autoButton, stopButton, startButton)
+
 	buttonsSpacer := canvas.NewRectangle(color.Transparent)
 	buttonsSpacer.SetMinSize(fyne.NewSize(timer.ControlButtonsGap, 0))
-	centerControlContainer := container.NewHBox(controlStack, buttonsSpacer, resetButton)
 
 	aboutIcon := widget.NewIcon(theme.QuestionIcon())
-	aboutButton := NewTappableContainer(aboutIcon, func() {
-		a.ShowInfoDialog(i18n.T("About D2Timers"), "assets/dialogue_about(eng).txt", fyne.NewSize(500, 400))
+	helpButton := NewTappableContainer(aboutIcon, func() {
+		a.ShowInfoDialog(i18n.T("Help"), "assets/timers_help.yaml", fyne.NewSize(500, 400))
 	}, nil)
 
-	iconButtonsContainer := container.New(layout.NewBorderLayout(nil, nil, aboutButton, nil), aboutButton)
+	leftContent := container.NewVBox(
+		layout.NewSpacer(),
+		helpButton,
+	)
 
-	topIconSpacer := canvas.NewRectangle(color.Transparent)
-	topIconSpacer.SetMinSize(fyne.NewSize(0, 12))
-	paddedIconContainer := container.NewVBox(topIconSpacer, iconButtonsContainer)
+	turboCheck := widget.NewCheck(i18n.T("Turbo"), nil)
+	if a.IsTurboEnabled() {
+		turboCheck.SetChecked(true)
+	}
+	turboCheck.OnChanged = func(checked bool) {
+		if err := a.ToggleTurboMode(checked); err != nil {
+			fyne.Do(func() {
+				turboCheck.SetChecked(!checked)
+			})
+		}
+		w.Canvas().Focus(nil)
+	}
+	a.SetTurboCheck(turboCheck)
 
-	footer := container.NewStack(paddedIconContainer, container.NewCenter(centerControlContainer))
+	controlButtons := container.NewHBox(controlStack, buttonsSpacer, resetButton)
+
+	centeredCheckbox := container.NewHBox(
+		layout.NewSpacer(),
+		turboCheck,
+		layout.NewSpacer(),
+	)
+
+	centeredControlButtons := container.NewHBox(
+		layout.NewSpacer(),
+		controlButtons,
+		layout.NewSpacer(),
+	)
+
+	vboxSpacer := canvas.NewRectangle(color.Transparent)
+	vboxSpacer.SetMinSize(fyne.NewSize(0, 1))
+
+	centralContentBlock := container.NewVBox(
+		centeredCheckbox,
+		vboxSpacer,
+		centeredControlButtons,
+	)
+
+	centeredCentralContentBlock := container.New(layout.NewCenterLayout(), centralContentBlock)
+
+	footer := container.New(
+		layout.NewBorderLayout(nil, nil, leftContent, nil),
+		leftContent,
+		centeredCentralContentBlock,
+	)
+
 	return autoButton, startButton, stopButton, resetButton, footer
 }
 
@@ -417,12 +423,10 @@ func CreateMainWindow(a App, fyneApp fyne.App, content embed.FS) fyne.Window {
 		title = "D2Timers"
 	}
 	w := fyneApp.NewWindow(title)
-	// a.mainWindow = w // Cannot set mainWindow here, as App is an interface
 
 	listContainer := BuildTimersList(a)
 	autoButton, startButton, stopButton, resetButton, footerLayout := BuildFooter(a, w)
 
-	// Set buttons in AppManager
 	a.SetAutoButton(autoButton)
 	a.SetStartButton(startButton)
 	a.SetStopButton(stopButton)
@@ -442,13 +446,11 @@ func CreateMainWindow(a App, fyneApp fyne.App, content embed.FS) fyne.Window {
 	a.UpdateControlButtonState()
 
 	w.SetContent(contentVBox)
-	// Use a single Resize with the intended width (TimerWidth) and a reasonable height.
 	w.Resize(fyne.NewSize(timer.TimerWidth, 469))
 	w.SetFixedSize(true)
 	return w
 }
 
-// TappableContainer is a wrapper for canvas objects to handle primary and secondary taps.
 type TappableContainer struct {
 	widget.BaseWidget
 	Content           fyne.CanvasObject
@@ -456,7 +458,6 @@ type TappableContainer struct {
 	OnTappedSecondary func(e *fyne.PointEvent)
 }
 
-// NewTappableContainer creates a new TappableContainer.
 func NewTappableContainer(c fyne.CanvasObject, onP func(), onS func(e *fyne.PointEvent)) *TappableContainer {
 	t := &TappableContainer{
 		Content:           c,
@@ -467,19 +468,16 @@ func NewTappableContainer(c fyne.CanvasObject, onP func(), onS func(e *fyne.Poin
 	return t
 }
 
-// CreateRenderer is a standard Fyne method.
 func (t *TappableContainer) CreateRenderer() fyne.WidgetRenderer {
-	return widget.NewSimpleRenderer(t.Content)
+	return widget.NewSimpleRenderer(container.NewHBox(t.Content, layout.NewSpacer()))
 }
 
-// Tapped is a standard Fyne method.
 func (t *TappableContainer) Tapped(_ *fyne.PointEvent) {
 	if t.OnTappedPrimary != nil {
 		t.OnTappedPrimary()
 	}
 }
 
-// TappedSecondary is a standard Fyne method.
 func (t *TappableContainer) TappedSecondary(e *fyne.PointEvent) {
 	if t.OnTappedSecondary != nil {
 		t.OnTappedSecondary(e)

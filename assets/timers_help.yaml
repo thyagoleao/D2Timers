@@ -18,28 +18,36 @@ en: |
 
   # "Reset" Button:
   - Hotkey: "R".
-  Resets all timers to the initial state.
+    Resets all timers to the initial state.
+
+  # Turbo Mode:
+  - Hotkey: "T".
+    Set timers for Turbo mode.
 
   -------------------------------------------------
 
   # Timer 1 - Stack Neutrals:
   Hotkey: "Z".
-  - Auto Mode (button): First alert: 1:45 (repeats every 1 minute).
-  - Manual Mode (click): Alert at 1:00 (repeats)
+  - Normal/Turbo Mode (auto): First alert at 1:45 (repeats every 1 minute).
+  - Normal/Turbo Mode (manual): Alert at 1:00 (repeats)
 
   -------------------------------------------------
 
   # Timer 2 - Power Runes:
   Hotkey: "X".
-  - Auto Mode (button): First alert: 1:50 (repeats every 2 minutes).
-  - Manual Mode (click): Alert at 2:00 (repeats).
+  - Normal Mode (auto): First alert at 5:50 (repeats every 2 minutes).
+  - Normal Mode (manual): Alert at 2:00 (repeats).
+  - Turbo Mode (auto): First alert at 3:50 (repeats every 2 minute).
+  - Turbo Mode (manual): Alert at 2:00 (repeats).
 
   -------------------------------------------------
 
   # Timer 3 - Shrines of Wisdom:
   Hotkey: "C".
-  - Auto Mode (button): First alert: 6:30 (repeats every 7 minutes).
-  - Manual Mode (click): Alert at 7:00 (repeats).
+  - Normal Mode (auto): First alert at 6:30 (repeats every 7 minutes).
+  - Normal Mode (manual): Alert at 7:00 (repeats).
+  - Turbo Mode (auto): First alert at 3:30 (repeats every 4 minutes).
+  - Turbo Mode (manual): Alert at 4:00 (repeats).
 
   -------------------------------------------------
 
@@ -53,8 +61,8 @@ en: |
   8:00 or 480 seconds (minimum Roshan respawn time);
   10:00 or 600 seconds (Tormentor respawn time).
 
-  - Auto Mode (button): The first alert will be at the set time (repeats).
-  - Manual Mode (click): Alert at the set time (does not repeat, but preserves the entered value).
+  - Normal/Turbo Mode (auto): The first alert will be at the set time (repeats).
+  - Normal/Turbo Mode (manual): Alert at the set time (does not repeat, but preserves the entered value).
 
 es: |
   El botón "Auto" inicia los temporizadores con tiempos predefinidos para simplificar el uso. Es la forma ideal de usarlo.
@@ -65,55 +73,65 @@ es: |
   # Interactividad manual de los temporizadores:
   "Clic izquierdo": Activa el temporizador en modo Manual.
   "Clic derecho" Reinicia el temporizador a su estado inicial.
-
+  
   # Botón "Auto"; "Stop"; o "Start":
   - Tecla de atajo: "Barra espaciadora".
   - Auto: Inicia los temporizadores en modo Auto incluyendo el Custom Timer (si se ha definido tiempo).
   - Stop: Pausa la cuenta de los temporizadores.
   - Start: Reanuda la cuenta de los temporizadores.
-
+  
   # Botón "Reset":
   - Tecla de atajo: "R".
-  Reinicia todos los temporizadores a su estado inicial.
-
+    Reinicia todos los temporizadores a su estado inicial.
+  
+  # Turbo Mode:
+  - Tecla de atajo: "T".
+    Establece los temporizadores para el modo Turbo.
+  
   -------------------------------------------------
-
+  
   # Temporizador 1 - Stack Neutrals:
   Tecla de atajo: "Z".
-  - Modo Auto (botón): Primera alerta: 1:45 (se repite cada 1 minuto).
-  - Modo Manual (clic): Alerta en 1:00 (se repite)
-
+  - Modo Normal/Turbo (auto): Primera alerta a la 1:45 (se repite cada 1 minuto).
+  - Modo Normal/Turbo (manual): Alerta a la 1:00 (se repite).
+  
   -------------------------------------------------
-
+  
   # Temporizador 2 - Power Runes:
   Tecla de atajo: "X".
-  - Modo Auto (botón): Primera alerta: 1:50 (se repite cada 2 minutos).
-  - Modo Manual (clic): Alerta en 2:00 (se repite).
+  - Modo Normal (auto): Primera alerta a las 5:50 (se repite cada 2 minutos).
+  - Modo Normal (manual): Alerta a las 2:00 (se repite).
+  - Modo Turbo (auto): Primera alerta a las 3:50 (se repite cada 2 minutos).
+  - Modo Turbo (manual): Alerta a las 2:00 (se repite).
+  
   -------------------------------------------------
-
+  
   # Temporizador 3 - Shrines of Wisdom:
   Tecla de atajo: "C".
-  - Modo Auto (botón): Primera alerta: 6:30 (se repite cada 7 minutos).
-  - Modo Manual (clic): Alerta en 7:00 (se repite).
+  - Modo Normal (auto): Primera alerta a las 6:30 (se repite cada 7 minutos).
+  - Modo Normal (manual): Alerta a las 7:00 (se repite).
+  - Modo Turbo (auto): Primera alerta a las 3:30 (se repite cada 4 minutos).
+  - Modo Turbo (manual): Alerta a las 4:00 (se repite).
+  
   -------------------------------------------------
-
+  
   # Temporizador 4 - Custom Timer:
   - Tecla de atajo: "V".
   Útil para monitorear cooldown de habilidades, Roshan, etc. 
   Inserta el valor en mm:ss o segundos (máx. 30:00 = 1800).
-
+  
   Ejemplos:
   3:00 o 180 segundos (cooldown de Black Hole en nivel 1);
   8:00 o 480 segundos (tiempo mínimo de reaparición de Roshan);
   10:00 o 600 segundos (tiempo de reaparición del Tormentor).
-
-  - Modo Auto (botón): La primera alerta será en el tiempo que se ha definido (se repite).
-  - Modo Manual (clic): Alerta en el tiempo definido (no se repite, pero conserva el valor ingresado).
+  
+  - Modo Normal/Turbo (auto): La primera alerta será en el tiempo establecido (se repite).
+  - Modo Normal/Turbo (manual): Alerta en el tiempo establecido (no se repite, pero conserva el valor ingresado).
 
 pt: |
   O botão "Auto" inicia os timers com tempos pré-definidos para simplificar o uso. É a forma ideal de uso.
   *Dica*: Pressione "Auto" assim que o relógio da sua partida marcar 00:00 (recomendado).
-
+  
   -------------------------------------------------
   # Interatividade manual dos timers:
   "Clique esquerdo": Ativa o timer no modo Manual.
@@ -124,53 +142,61 @@ pt: |
   - Auto: Inicia os timers no modo Auto incluindo o Custom Timer (se definido tempo).
   - Stop: Pausa contagem dos timers.
   - Start: Retoma a contagem dos timers.
-
+  
   # Botão "Reset":
   - Tecla de atalho: "R".
-  Reinicia todos os timers para o estado inicial.
-
+    Reinicia todos os timers para o estado inicial.
+  
+  # Modo Turbo:
+  - Tecla de atalho: "T".
+    Define os timers para o modo Turbo.
+  
   -------------------------------------------------
-
+  
   # Timer 1 - Stack Neutrals:
   Tecla de atalho: "Z".
-  - Modo Auto (botão): Primeiro alerta: 1:45 (repete a cada 1 minuto).
-  - Modo Manual (clique): Alerta em 1:00 (repete)
-
+  - Modo Normal/Turbo (auto): Primeiro alerta às 1:45 (repete a cada 1 minuto).
+  - Modo Normal/Turbo (manual): Alerta às 1:00 (repete).
+  
   -------------------------------------------------
-
+  
   # Timer 2 - Power Runes:
   Tecla de atalho: "X".
-  - Modo Auto (botão): Primeiro alerta: 1:50 (repete a cada 2 minutos).
-  - Modo Manual (clique): Alerta em 2:00 (repete).
-
+  - Modo Normal (auto): Primeiro alerta às 5:50 (repete a cada 2 minutos).
+  - Modo Normal (manual): Alerta às 2:00 (repete).
+  - Modo Turbo (auto): Primeiro alerta às 3:50 (repete a cada 2 minutos).
+  - Modo Turbo (manual): Alerta às 2:00 (repete).
+  
   -------------------------------------------------
-
+  
   # Timer 3 - Shrines of Wisdom:
   Tecla de atalho: "C".
-  - Modo Auto (botão): Primeiro alerta: 6:30 (repete a cada 7 minutos).
-  - Modo Manual (clique): Alerta em 7:00 (repete).
-
+  - Modo Normal (auto): Primeiro alerta às 6:30 (repete a cada 7 minutos).
+  - Modo Normal (manual): Alerta às 7:00 (repete).
+  - Modo Turbo (auto): Primeiro alerta às 3:30 (repete a cada 4 minutos).
+  - Modo Turbo (manual): Alerta às 4:00 (repete).
+  
   -------------------------------------------------
-
+  
   # Timer 4 - Custom Timer:
   - Tecla de atalho: "V".
   Útil para monitorar cooldown de habilidades, Roshan, etc. 
   Insira o valor em mm:ss ou segundos (máx. 30:00 = 1800).
-
+  
   Exemplos:
   3:00 ou 180 segundos (cooldown do Black Hole no level 1);
   8:00 ou 480 segundos (tempo mínimo de renascimento do Roshan);
   10:00 ou 600 segundos (tempo de renascimento do Tormentor).
-
-  - Modo Auto (botão): Primeiro alerta será no tempo que foi definido (repete).
-  - Modo Manual (clique): Alerta no tempo definido (não repete, mas preserva o valor inserido).
+  
+  - Modo Normal/Turbo (auto): O primeiro alerta será no tempo definido (repete).
+  - Modo Normal/Turbo (manual): Alerta no tempo definido (não repete, mas preserva o valor inserido).
 
 ru: |
   Кнопка "Авто" запускает таймеры с заранее определенным временем для упрощения использования. Это лучший способ использования.
   *Совет*: Нажмите "Авто", как только часы матча покажут 00:00 (рекомендуется).
-
+  
   -------------------------------------------------
-
+  
   # Индивидуальное взаимодействие с таймером:
   - "Левый клик": Активировать таймер в ручном режиме.
   - "Правый клик": Сбросить таймер в исходное состояние.
@@ -183,28 +209,36 @@ ru: |
 
   # Кнопка "Сброс":
   - Горячая клавиша: "R".
-  Сбрасывает все таймеры в исходное состояние.
+    Сбрасывает все таймеры в исходное состояние.
+
+  # Режим "Турбо":
+  - Горячая клавиша: "T".
+    Установить таймеры для режима "Турбо".
 
   -------------------------------------------------
 
   # Таймер 1 - Стаки нейтралов:
   Горячая клавиша: "Z".
-  - Автоматический режим (кнопка): Первое оповещение: 1:45 (повторяется каждую 1 минуту).
-  - Ручной режим (клик): Оповещение в 1:00 (повторяется).
+  - Обычный/Турбо режим (авто): Первое оповещение в 1:45 (повторяется каждую 1 минуту).
+  - Обычный/Турбо режим (ручной): Оповещение в 1:00 (повторяется).
 
   -------------------------------------------------
 
   # Таймер 2 - Руны силы:
   Горячая клавиша: "X".
-  - Автоматический режим (кнопка): Первое оповещение: 1:50 (повторяется каждые 2 минуты).
-  - Ручной режим (клик): Оповещение в 2:00 (повторяется).
+  - Обычный режим (авто): Первое оповещение в 5:50 (повторяется каждые 2 минуты).
+  - Обычный режим (ручной): Оповещение в 2:00 (повторяется).
+  - Турбо режим (авто): Первое оповещение в 3:50 (повторяется каждые 2 минуты).
+  - Турбо режим (ручной): Оповещение в 2:00 (повторяется).
 
   -------------------------------------------------
 
   # Таймер 3 - Святилища мудрости:
   Горячая клавиша: "C".
-  - Автоматический режим (кнопка): Первое оповещение: 6:30 (повторяется каждые 7 минут).
-  - Ручной режим (клик): Оповещение в 7:00 (повторяется).
+  - Обычный режим (авто): Первое оповещение в 6:30 (повторяется каждые 7 минут).
+  - Обычный режим (ручной): Оповещение в 7:00 (повторяется).
+  - Турбо режим (авто): Первое оповещение в 3:30 (повторяется каждые 4 минуты).
+  - Турбо режим (ручной): Оповещение в 4:00 (повторяется).
 
   -------------------------------------------------
 
@@ -212,11 +246,11 @@ ru: |
   - Горячая клавиша: "V".
   Полезно для отслеживания перезарядки способностей, Рошана, Мучителя и т.д.
   Введите значение в формате мм:сс или в секундах (макс. 30:00 = 1800).
-
+  
   Примеры:
   3:00 или 180 секунд (время перезарядки Black Hole на уровне 1);
   8:00 или 480 секунд (минимальное время возрождения Рошана);
   10:00 или 600 секунд (время возрождения Мучителя).
-
-  - Автоматический режим (кнопка): Первое оповещение будет в установленное время (повторяется).
-  - Ручной режим (клик): Оповещение в установленное время (не повторяется, но сохраняет введенное значение).
+  
+  - Обычный/Турбо режим (авто): Первое оповещение будет в установленное время (повторяется).
+  - Обычный/Турбо режим (ручной): Оповещение в установленное время (не повторяется, но сохраняет введенное значение).

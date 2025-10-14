@@ -59,25 +59,33 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
   
   - Hotkey: Z
   
-  - Auto Mode: First alert: 1:45 (repeats every 1 minutes).
+  - Normal/Turbo Mode (auto): First alert at 1:45 (repeats every 1 minute).
   
-  - Manual Mode (click): Alert at 2:00 (repeats).
+  - Normal/Turbo Mode (manual): Alert at 1:00 (repeats).
 
 - **Timer 2 - Power Runes**:
   
   - Hotkey: X
   
-  - Auto Mode: First alert: 1:50 (repeats every 2 minutes).
+  - Normal Mode (auto): First alert at 5:50 (repeats every 2 minutes).
   
-  - Manual Mode (click): Alert at 2:00 (repeats).
+  - Normal Mode (manual): Alert at 2:00 (repeats).
+  
+  - Turbo Mode (auto): First alert at 3:50 (repeats every 2 minutes).
+  
+  - Turbo Mode (manual): Alert at 2:00 (repeats).
 
 - **Timer 3 - Shrines of Wisdom**:
   
   - Hotkey: C
   
-  - Auto Mode: First alert: 6:30 (repeats every 7 minutes).
+  - Normal Mode (auto): First alert at 6:30 (repeats every 7 minutes).
   
-  - Manual Mode (click): Alert at 7:00 (repeats).
+  - Normal Mode (manual): Alert at 7:00 (repeats).
+  
+  - Turbo Mode (auto): First alert at 3:30 (repeats every 4 minutes).
+  
+  - Turbo Mode (manual): Alert at 4:00 (repeats).
 
 - **Timer 4 - Custom Timer**:
   
@@ -86,9 +94,9 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
   
   - Hotkey: V
   
-  - Auto Mode: The first alert will be at the set time (repeats).
+  - Normal/Turbo Mode (auto): The first alert will be at the set time (repeats).
   
-  - Manual Mode (click): Alert at the set time (does not repeat, but preserves the entered value).
+  - Normal/Turbo Mode (manual): Alert at the set time (does not repeat, but preserves the entered value).
     
     - Examples:
       

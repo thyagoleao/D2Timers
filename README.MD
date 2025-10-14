@@ -9,7 +9,7 @@ Anyone interested can use it, of course, but it was created with "habit building
 
 ## What it is
 
-To be clear: This is not game a cheat because this is a standalone app. There is no game integration. No one information is captured form your game and no overlays are set on you screen.
+To be clear: This is not game a cheat because this is a standalone app. There is no game integration. No one information is captured from your game and no overlays are set on you screen.
 
 Its a timer aplication, configured to emit an audible alert on specific game timers (Normal and Turbo Mode are available). You need to interact manualy.
 

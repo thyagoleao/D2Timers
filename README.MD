@@ -19,7 +19,7 @@ Its a timer aplication, configured to emit an audible alert on specific game tim
 
 [Github](https://github.com/thyagoleao/d2timers/releases) is the only source where you can get official D2Timers information and downloads.
 
-Download **D2Timers.zip** in release section.
+Download **D2Timers.zip** for Windows in release section. You will find the Linux version in .tar.xz.
 
 ## How to use
 

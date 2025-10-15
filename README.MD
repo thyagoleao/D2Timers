@@ -29,85 +29,85 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
 *Tip*: Press "Auto" as soon as your match clock shows 00:00 (recommended).
 
 - **Individual timer interaction:**
-  
-  - "Left-click": Activate the timer in Manual mode.
-  
-  - "Right-click": Reset the timer to its initial state.
+    
+    - "Left-click": Activate the timer in Manual mode.
+    
+    - "Right-click": Reset the timer to its initial state.
 
 - **"Auto"; "Stop"; or "Start" Button:**
-  
-  - Hotkey: "Spacebar".
-  
-  - Auto: Starts the timers in Auto mode including the Custom Timer (if time is set).
-  
-  - Stop: Pauses the timer count.
-  
-  - Start: Resumes the timer count.
+    
+    - Hotkey: "Spacebar".
+    
+    - Auto: Starts the timers in Auto mode including the Custom Timer (if time is set).
+    
+    - Stop: Pauses the timer count.
+    
+    - Start: Resumes the timer count.
 
 - **"Reset" Button:**
-  
-  - Hotkey: "R".
-  
-  - Resets all timers to the initial state. 
+    
+    - Hotkey: "R".
+    
+    - Resets all timers to the initial state. 
 
 - **Turbo Mode:**
-  
-  - Hotkey: "T".
-  
-  - Sets timers for "Turbo Mode".
+    
+    - Hotkey: "T".
+    
+    - Sets timers for "Turbo Mode".
 
 ## About Timers
 
 - **Timer 1 - Stack Neutrals**:
-  
-  - Hotkey: Z
-  
-  - Normal/Turbo Mode (auto): First alert at 1:45 (repeats every 1 minute).
-  
-  - Normal/Turbo Mode (manual): Alert at 1:00 (repeats).
+    
+    - Hotkey: Z
+    
+    - Normal/Turbo Mode (auto): First alert at 1:45 (repeats every 1 minute).
+    
+    - Normal/Turbo Mode (manual): Alert at 1:00 (repeats).
 
 - **Timer 2 - Power Runes**:
-  
-  - Hotkey: X
-  
-  - Normal Mode (auto): First alert at 5:50 (repeats every 2 minutes).
-  
-  - Normal Mode (manual): Alert at 2:00 (repeats).
-  
-  - Turbo Mode (auto): First alert at 3:50 (repeats every 2 minutes).
-  
-  - Turbo Mode (manual): Alert at 2:00 (repeats).
+    
+    - Hotkey: X
+    
+    - Normal Mode (auto): First alert at 5:50 (repeats every 2 minutes).
+    
+    - Normal Mode (manual): Alert at 2:00 (repeats).
+    
+    - Turbo Mode (auto): First alert at 3:50 (repeats every 2 minutes).
+    
+    - Turbo Mode (manual): Alert at 2:00 (repeats).
 
 - **Timer 3 - Shrines of Wisdom**:
-  
-  - Hotkey: C
-  
-  - Normal Mode (auto): First alert at 6:30 (repeats every 7 minutes).
-  
-  - Normal Mode (manual): Alert at 7:00 (repeats).
-  
-  - Turbo Mode (auto): First alert at 3:30 (repeats every 4 minutes).
-  
-  - Turbo Mode (manual): Alert at 4:00 (repeats).
+    
+    - Hotkey: C
+    
+    - Normal Mode (auto): First alert at 6:30 (repeats every 7 minutes).
+    
+    - Normal Mode (manual): Alert at 7:00 (repeats).
+    
+    - Turbo Mode (auto): First alert at 3:30 (repeats every 4 minutes).
+    
+    - Turbo Mode (manual): Alert at 4:00 (repeats).
 
 - **Timer 4 - Custom Timer**:
-  
-  You need to set up a value in mm:ss or seconds (max. 30:00 = 1800).
-  Useful for monitoring ability cooldowns, Roshan, Tormentor, etc.
-  
-  - Hotkey: V
-  
-  - Normal/Turbo Mode (auto): The first alert will be at the set time (repeats).
-  
-  - Normal/Turbo Mode (manual): Alert at the set time (does not repeat, but preserves the entered value).
-    
-    - Examples:
-      
-      3:00 or 180 seconds (Black Hole cooldown time at level 1);
-      
-      8:00 or 480 seconds (minimum Roshan respawn time);
-      
-      10:00 or 600 seconds (Tormentor respawn time).
+    
+    You need to set up a value in mm:ss or seconds (max. 30:00 = 1800).
+    Useful for monitoring ability cooldowns, Roshan, Tormentor, etc.
+    
+    - Hotkey: V
+    
+    - Normal/Turbo Mode (auto): The first alert will be at the set time (repeats).
+    
+    - Normal/Turbo Mode (manual): Alert at the set time (does not repeat, but preserves the entered value).
+      
+      - Examples:
+        
+        3:00 or 180 seconds (Black Hole cooldown time at level 1);
+        
+        8:00 or 480 seconds (minimum Roshan respawn time);
+        
+        10:00 or 600 seconds (Tormentor respawn time).
 
 ## Visual
 
@@ -143,9 +143,3 @@ You can let me know in the issues section.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 *This application is made by a fan and is not an officially supported Valve Corporation product.*
-
-
-
-
-
-

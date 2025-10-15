@@ -66,8 +66,8 @@ The "Auto" button starts the timers with pre-defined times to simplify usage. It
     - Turbo Mode (manual): Alert at 4:00 (repeats).
 
 - **Timer 4 - Custom Timer**:
-  You need to set up a value in mm:ss or seconds (max. 30:00 = 1800).
-  Useful for monitoring ability cooldowns, Roshan, Tormentor, etc.
+    You need to set up a value in mm:ss or seconds (max. 30:00 = 1800).
+    Useful for monitoring ability cooldowns, Roshan, Tormentor, etc.
     - Hotkey: V
     - Normal/Turbo Mode (auto): The first alert will be at the set time (repeats).
     - Normal/Turbo Mode (manual): Alert at the set time (does not repeat, but preserves the entered value).

@@ -2,10 +2,9 @@
 
 # D2Timers
 
-## Introduction
+### ## Introduction
 
-D2Timers is a tool that aims to facilitate the achievement of objectives in DotA 2.
-Anyone interested can use it, of course, but it was created with "habit building" in mind for less experienced players. More experienced players should always challenge themselves to improve their skills. So use it sparingly.
+D2Timers is a tool that aims to facilitate the achievement of objectives in DotA 2. Anyone interested can use it, of course, but it was created with "habit building" in mind for less experienced players. More experienced players should always challenge themselves to improve their skills. So use it sparingly.
 
 ## What it is
 
@@ -15,9 +14,9 @@ This is a standalone app. It's a timer application, configured to emit an audibl
 
 ## Downloads
 
-[Github](https://github.com/thyagoleao/d2timers/releases) is the only source where you can get official D2Timers information and downloads.
+[Github](https://github.com/thyagoleao/d2timers/releases) is the only source where you can get official D2Timers information and downloads.
 
-Download **D2Timers.zip** for Windows in the release section. You will find the Linux version in .tar.xz.
+Download **D2Timers.zip** for Windows in the release section. You will find the Linux version in .tar.xz.
 
 ## How to use
 
@@ -25,89 +24,66 @@ There are two ways to use this application.
 
 Clicking on individual timers or just pressing the Auto button.
 
-The "Auto" button starts the timers with pre-defined times to simplify usage. It is the best way to use it.
-*Tip*: Press "Auto" as soon as your match clock shows 00:00 (recommended).
+The "Auto" button starts the timers with pre-defined times to simplify usage. It is the best way to use it. *Tip*: Press "Auto" as soon as your match clock shows 00:00 (recommended).
 
 - **Individual timer interaction:**
-    
-    - "Left-click": Activate the timer in Manual mode.
-    
-    - "Right-click": Reset the timer to its initial state.
+  
+  - "Left-click": Activate the timer in Manual mode.
+  - "Right-click": Reset the timer to its initial state.
 
 - **"Auto"; "Stop"; or "Start" Button:**
-    
-    - Hotkey: "Spacebar".
-    
-    - Auto: Starts the timers in Auto mode including the Custom Timer (if time is set).
-    
-    - Stop: Pauses the timer count.
-    
-    - Start: Resumes the timer count.
+  
+  - Hotkey: "Spacebar".
+  - Auto: Starts the timers in Auto mode including the Custom Timer (if time is set).
+  - Stop: Pauses the timer count.
+  - Start: Resumes the timer count.
 
 - **"Reset" Button:**
-    
-    - Hotkey: "R".
-    
-    - Resets all timers to the initial state. 
+  
+  - Hotkey: "R". Resets all timers to the initial state.
 
 - **Turbo Mode:**
-    
-    - Hotkey: "T".
-    
-    - Sets timers for "Turbo Mode".
+  
+  - Hotkey: "T". Sets timers for "Turbo Mode".
 
 ## About Timers
 
 - **Timer 1 - Stack Neutrals**:
-    
-    - Hotkey: Z
-    
-    - Normal/Turbo Mode (auto): First alert at 1:45 (repeats every 1 minute).
-    
-    - Normal/Turbo Mode (manual): Alert at 1:00 (repeats).
+  
+  - Hotkey: Z
+  - Normal/Turbo Mode (auto): First alert at 1:45 (repeats every 1 minute).
+  - Normal/Turbo Mode (manual): Alert at 1:00 (repeats).
 
 - **Timer 2 - Power Runes**:
-    
-    - Hotkey: X
-    
-    - Normal Mode (auto): First alert at 5:50 (repeats every 2 minutes).
-    
-    - Normal Mode (manual): Alert at 2:00 (repeats).
-    
-    - Turbo Mode (auto): First alert at 3:50 (repeats every 2 minutes).
-    
-    - Turbo Mode (manual): Alert at 2:00 (repeats).
+  
+  - Hotkey: X
+  - Normal Mode (auto): First alert at 5:50 (repeats every 2 minutes).
+  - Normal Mode (manual): Alert at 2:00 (repeats).
+  - Turbo Mode (auto): First alert at 3:50 (repeats every 2 minutes).
+  - Turbo Mode (manual): Alert at 2:00 (repeats).
 
 - **Timer 3 - Shrines of Wisdom**:
-    
-    - Hotkey: C
-    
-    - Normal Mode (auto): First alert at 6:30 (repeats every 7 minutes).
-    
-    - Normal Mode (manual): Alert at 7:00 (repeats).
-    
-    - Turbo Mode (auto): First alert at 3:30 (repeats every 4 minutes).
-    
-    - Turbo Mode (manual): Alert at 4:00 (repeats).
+  
+  - Hotkey: C
+  - Normal Mode (auto): First alert at 6:30 (repeats every 7 minutes).
+  - Normal Mode (manual): Alert at 7:00 (repeats).
+  - Turbo Mode (auto): First alert at 3:30 (repeats every 4 minutes).
+  - Turbo Mode (manual): Alert at 4:00 (repeats).
 
-- **Timer 4 - Custom Timer**:
-    
-    You need to set up a value in mm:ss or seconds (max. 30:00 = 1800).
-    Useful for monitoring ability cooldowns, Roshan, Tormentor, etc.
-    
-    - Hotkey: V
-    
-    - Normal/Turbo Mode (auto): The first alert will be at the set time (repeats).
-    
-    - Normal/Turbo Mode (manual): Alert at the set time (does not repeat, but preserves the entered value).
-      
-      - Examples:
-        
-        3:00 or 180 seconds (Black Hole cooldown time at level 1);
-        
-        8:00 or 480 seconds (minimum Roshan respawn time);
-        
-        10:00 or 600 seconds (Tormentor respawn time).
+- **Timer 4 - Custom Timer**: 
+  
+  You need to set up a value in **mm:ss or seconds** (max. 30:00 = 1800). Useful for monitoring ability cooldowns, Roshan, Tormentor, etc.
+  
+  - Hotkey: V
+  - Normal/Turbo Mode (auto): The first alert will be at the set time (repeats).
+  - Normal/Turbo Mode (manual): Alert at the set time (does not repeat, but preserves the entered value).
+    - Examples:
+      
+          3:00 or 180 seconds (Black Hole cooldown time at level 1);
+      
+          8:00 or 480 seconds (minimum Roshan respawn time);
+      
+          10:00 or 600 seconds (Tormentor respawn time).
 
 ## Visual
 
